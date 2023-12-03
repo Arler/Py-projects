@@ -13,7 +13,7 @@ def start_game():
         else:
             break
 
-
+# Старт игры
 def start():
     game_active = True
     # Матрица для вывода в консоль
@@ -30,14 +30,12 @@ def start():
             # Выстраивание поля игры
             show_game_area(game_area)
 
-            # Ход игрока записывается в специальную переменную и разбивается  на список индексов
-            players_move = input(f'Ход игрока {player}: ').split()
-            if 'stop' in players_move:
-                break_flag = True
+            # Получить ход игрока или завершить игру
+            break_flag, players_move = get_players_move(player, game_area)
+            if break_flag:
                 break
-            players_move = [int(i) for i in players_move]
 
-            # По индексам происходит замена на игровом поле прочерка на крестик либо нолик
+            # Разместить ход
             game_area = place_x_or_o(game_area, player, players_move)
 
             # Проверка выигрыша
@@ -48,6 +46,20 @@ def start():
                 break
         if break_flag:
             break
+
+
+# Ход игрока записывается в специальную переменную и разбивается  на список индексов
+def get_players_move(player, game_area):
+    players_move = input(f'Ход игрока {player}: ').split()
+    if 'stop' in players_move:
+        return True, players_move
+    players_move = [int(i) for i in players_move]
+    if game_area[players_move[0] + 1][players_move[1]] != '-':
+        print('Нельзя замещать уже поставленный символ')
+        break_flag, players_move = get_players_move(player, game_area)
+        return break_flag, players_move
+    else:
+        return False, players_move
 
 
 # Функция проверки выигрыша
@@ -125,7 +137,7 @@ def end_the_game(player):
     return game_active
 
 
-# Функция размещения хода игрока
+# # По индексам происходит замена на игровом поле прочерка на крестик либо нолик
 def place_x_or_o(game_area, player, players_move):
     if player == 1:
         game_area[players_move[0] + 1][players_move[1]] = 'x'
