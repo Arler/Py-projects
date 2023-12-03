@@ -58,9 +58,7 @@ def checking_the_winner(game_active, game_area, player):
     # Создание копии матрицы повёрнутой на 90 градусов
     for i in range(len(temp_copy)):
         vertical_list[0].append(temp_copy[-(i + 1)][0])
-    for i in range(len(temp_copy)):
         vertical_list[1].append(temp_copy[-(i + 1)][1])
-    for i in range(len(temp_copy)):
         vertical_list[2].append(temp_copy[-(i + 1)][2])
 
     # Проверка по горизонтали
