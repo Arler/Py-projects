@@ -290,7 +290,7 @@ class ConsoleGameGui:
     # Внутренний метод для вывода полей на экран
     def _draw(self) -> None:
         p = ['|', 1, '|', 2, '|', 3, '|', 4, '|', 5, '|', 6, '|']
-        print(' ', *p, '\t', '\t', *p, sep=' ')
+        print(' ', *p, '\t', '   ', *p, sep=' ')
         for i in range(len(self._logic.player.board)):
             print(i+1, *self._logic.player.board[i], '\t', i+1,
                   *self._logic.player.target_board[i], sep=' | ', end=' |\n')
