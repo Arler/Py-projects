@@ -1,0 +1,57 @@
+user1 = User.objects.create_user('Vladimir')
+user2 = User.objects.create_user('Maksim')
+
+author1 = Author.objects.create(user=user1)
+author2 = Author.objects.create(user=user2)
+
+Category.objects.create(category_name='Спорт')
+Category.objects.create(category_name='Наука')
+Category.objects.create(category_name='Кино')
+Category.objects.create(category_name='Программирование')
+Category.objects.create(category_name='Игры')
+
+post1 = Post.objects.create(author=author1, post_type=Post.article, title='Some title', text='some text')
+post2 = Post.objects.create(author=author1, post_type=Post.article, title='Some title', text='some text')
+post3 = Post.objects.create(author=author2, post_type=Post.news, title='Some Title', text='Some text')
+
+PostCategory.objects.create(post=post1, category=Category.objects.get(category_name='Спорт'))
+PostCategory.objects.create(post=post1, category=Category.objects.get(category_name='Наука'))
+PostCategory.objects.create(post=post2, category=Category.objects.get(category_name='Программирование'))
+PostCategory.objects.create(post=post2, category=Category.objects.get(category_name='Наука'))
+PostCategory.objects.create(post=post3, category=Category.objects.get(category_name='Игры'))
+PostCategory.objects.create(post=post3, category=Category.objects.get(category_name='Кино'))
+
+Comment.objects.create(post=post1, user=user2, text='Some text')
+Comment.objects.create(post=post2, user=user2, text='Some text')
+Comment.objects.create(post=post3, user=user1, text='Some text')
+Comment.objects.create(post=post2, user=user1, text='Some text')
+Comment.objects.create(post=post2, user=user2, text='Some text')
+
+post1.like()
+post2.like()
+post2.like()
+post2.like()
+post2.dislike()
+post3.like()
+Comment.objects.get(pk=1).like()
+Comment.objects.get(pk=1).like()
+Comment.objects.get(pk=3).like()
+Comment.objects.get(pk=3).like()
+Comment.objects.get(pk=3).dislike()
+Comment.objects.get(pk=2).like()
+Comment.objects.get(pk=4).like()
+Comment.objects.get(pk=5).like()
+
+author1.update_rating()
+author2.update_rating()
+
+best_author = Author.objects.order_by('-rating').values('user__username', 'rating')[0]
+f"Никнейм: {best_author['user__username']} Рейтинг: {best_author['rating']}"
+
+best_author = Author.objects.order_by('-rating').values('user__date_joined', 'user__username', 'rating')[0]
+best_post = Post.objects.filter(author=Author.objects.get(rating=best_author['rating']).id).order_by('-rating')[0]
+f"Дата присоединения: {best_author['user__date_joined'].strftime('%d.%m.%y %H:%M')} \
+ Никнейм: {best_author['user__username']} Рейтинг: {best_author['rating']} \
+ Заголовок лучшей статьи: {best_post.title} Превью: {best_post.preview()}"
+
+Comment.objects.filter(post=best_post.id).values('date', 'user', 'rating', 'text')
