@@ -12,13 +12,11 @@ News
         <tr>
             <td>Автор</td>
             <td>Дата публикации</td>
-            <td>Категория</td>
             <td>Рейтинг</td>
         </tr>
         <tr>
             <td>{{ post.author.user.username }}</td>
             <td>{{ post.date|date:'d M Y' }}</td>
-            <td>{{ post.category }}</td>
             <td>{{ post.rating }}</td>
         </tr>
     </table>
