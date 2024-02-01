@@ -1,0 +1,26 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+    <table>
+        <tr>
+            <td>Автор</td>
+            <td>Дата публикации</td>
+            <td>Категория</td>
+            <td>Рейтинг</td>
+        </tr>
+        <tr>
+            <td>{{ post.author.user.username }}</td>
+            <td>{{ post.date|date:'d M Y' }}</td>
+            <td>{{ post.category }}</td>
+            <td>{{ post.rating }}</td>
+        </tr>
+    </table>
+<h3>{{ post.text|censor:"проблем" }}</h3>
+{% endblock content %}
