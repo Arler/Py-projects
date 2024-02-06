@@ -1,0 +1,25 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_tags %}
+
+{% block content %}
+<form action="" method="get">
+   {{ filter.form.as_p }}
+   <input type="submit" value="Найти" />
+</form>
+
+<table>
+   <tr>
+       <td>Заголовок</td>
+       <td>Дата публикации</td>
+       <td>Превью</td>
+   </tr>
+   {% for post in filter.qs %}
+   <tr>
+       <td>{{ post.title }}</td>
+       <td>{{ post.date|date:'d M Y' }}</td>
+       <td>{{ post.text|truncatewords:20 }}</td>
+   </tr>
+   {% endfor %}
+</table>
+{% endblock content %}
